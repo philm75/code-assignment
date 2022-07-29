@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -32,6 +33,8 @@ public class ShoppingCartIntegrationTest {
         assertThat(shoppingCart.subTotal(), is(5.04));
         assertThat(shoppingCart.taxPayable(), is(0.63));
         assertThat(shoppingCart.totalPayable(), is(5.67));
+
+        printCart(shoppingCart);
     }
 
     @Test
@@ -52,6 +55,8 @@ public class ShoppingCartIntegrationTest {
         assertThat(shoppingCart.subTotal(), is(15.02));
         assertThat(shoppingCart.taxPayable(), is(1.88));
         assertThat(shoppingCart.totalPayable(), is(16.90));
+
+        printCart(shoppingCart);
     }
 
     @Test
@@ -93,5 +98,24 @@ public class ShoppingCartIntegrationTest {
         assertThat(shoppingCart.subTotal(), is(21238.65));
         assertThat(shoppingCart.taxPayable(), is(2654.83));
         assertThat(shoppingCart.totalPayable(), is(23893.48));
+
+        printCart(shoppingCart);
+    }
+
+    private void printCart(ShoppingCart shoppingCart) {
+        DecimalFormat decimalFormat = new DecimalFormat("###,###0.00");
+        shoppingCart.getProducts().forEach((key, value) -> {
+            System.out.print(value);
+            System.out.print(" x ");
+            System.out.print(key.getName());
+            System.out.print(" @ ");
+            System.out.print(key.getPrice());
+            System.out.print(" each");
+            System.out.print("\n");
+        });
+
+        System.out.println("Subtotal = " + decimalFormat.format(shoppingCart.subTotal()));
+        System.out.println("Tax = " + decimalFormat.format(shoppingCart.taxPayable()));
+        System.out.println("Total = " + decimalFormat.format(shoppingCart.totalPayable()));
     }
 }
