@@ -26,7 +26,7 @@ public class ShoppingCart {
     }
 
     public Map<Product, Integer> getProducts() {
-        return Collections.unmodifiableMap(this.products);
+        return Collections.unmodifiableMap(products);
     }
 
     public double subTotal() {
@@ -35,21 +35,21 @@ public class ShoppingCart {
     }
 
     public double taxPayable() {
-        double subTotal = this.calculateSubTotal();
+        double subTotal = calculateSubTotal();
         double taxPayable = subTotal * TAX_PAYABLE_PERCENTAGE / 100;
         return round(taxPayable);
     }
 
     public double totalPayable() {
-        double subTotal = this.calculateSubTotal();
-        double taxPayable = this.taxPayable();
+        double subTotal = calculateSubTotal();
+        double taxPayable = taxPayable();
         return round(subTotal + taxPayable);
     }
 
     private double calculateSubTotal() {
         double subTotal = 0.00;
 
-        for (Map.Entry<Product, Integer> product : this.products.entrySet()) {
+        for (Map.Entry<Product, Integer> product : products.entrySet()) {
             subTotal += product.getValue() * product.getKey().getPrice();
         }
 
@@ -58,7 +58,6 @@ public class ShoppingCart {
 
     private double round(double value) {
         BigDecimal bigDecimal = BigDecimal.valueOf(value);
-        bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
-        return bigDecimal.doubleValue();
+        return bigDecimal.setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 }
